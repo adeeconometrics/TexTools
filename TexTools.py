@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Match, Tuple, Union
 
 class Matrix:
     __mat:List[List[str]]
@@ -58,7 +58,36 @@ def matrix_factory(entry: List[List[Union[float, int]]],
     return ConcreteMatrix([[str(i) for i in j] for j in entry], row, col, matrix_type)
 
 
-def equation() -> str: ...
+class Equations:
+    __eqs:List[str]
+
+    def aligned(self) -> str: ...
+    def centered(self) -> str: ...
+    def split(self) -> str: ...
+    def labeled(self) -> str: ... 
+
+    ...
+
+
+def frac(arg:Tuple[Union[str,int], Union[str,int]]) -> str:
+    return f'\\frac{{{arg[0]}}}{{{arg[1]}}}'
+
+
+def enclose(expr:str, parenthetical:str = 'perenthesis') -> str: 
+    if not parenthetical in ('parenthesis', 'bracket', 'braces', 'pipes', 'double_pipes', 'angle_bracket'):
+        raise ValueError(f"parenthetical argument is not valid")
+    
+    return {
+        'parenthesis': f"\\left ( {expr} \\right)", 
+        'bracket' : f"\\left[ {expr} \\right]",
+        'braces':  f"\\left \\{{ {expr} \\right \\}}",
+        'pipes': f"\\left | {expr} \\right |",
+        'double_pipes': f"\\left || {expr} \\right ||", 
+        'angle_brackets': f"\\left \\langle {expr} \\right \\langle" 
+    } [parenthetical]
+
+def text(expr:str) -> str: 
+    return f"\\text{{{expr}}}"
 
 if __name__ == '__main__':
     A = Matrix('A',5,5, 'pmatrix')
